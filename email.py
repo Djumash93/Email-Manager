@@ -63,10 +63,10 @@ while True:
     user_choice = int(input('''\nWould you like to:
     1. Read an email
     2. View unread emails
-    3. Quit application
+    3. Delete email by index (starting at 0)
     4. List Emails Subject Line with Order Number
     5. Read all viewed emails
-    6. Delete email by index (starting at 0)
+    6. Quit application
     Enter selection: '''))
        
     if user_choice == 1:
@@ -85,9 +85,11 @@ while True:
                 print('All emails have been read')  
                 break #to go back to menu
     elif user_choice == 3:
-        # add logic here to quit application
-        print('Goodbye!!!')
-        exit()
+        
+        index_option = int(input(f'Please choose the index of the email to DELETE. It has to be less than {len(inbox)}: '))      
+        inbox.pop(index_option)  
+        print(f'Email at index {index_option} successfully deleted!')
+        
     elif user_choice ==4:
         list_emails() #adding this functionality otherwise it is not used at all.    
     elif user_choice==5: #Adding an option to re-read read emails otherwise no way to access.
@@ -98,9 +100,9 @@ while True:
                 print('Please choose to read unread emails option 2')     
                 break   
     elif user_choice ==6:
-        index_option = int(input(f'Please choose the index of the email to DELETE. It has to be less than {len(inbox)}: '))      
-        inbox.pop(index_option)  
-        print(f'Email at index {index_option} successfully deleted!')
+        
+        print('Goodbye!!!')
+        exit()
     else:
         print("Oops - incorrect input.")
 
