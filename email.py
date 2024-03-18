@@ -11,13 +11,15 @@
 
 class Email:
     has_been_read = False
+    has_been_sent = False
     def __init__(self, email_address, subject_line, email_content):
         self.email_address = email_address
         self.subject_line= subject_line
         self.email_content = email_content 
     def mark_as_read(self):
         self.has_been_read = True
-        
+    def mark_as_sent(self):
+        self.has_been_sent = True    
     
 
 # --- Lists --- #
@@ -51,7 +53,11 @@ def read_email(index):
        print('Unfortunately Index is out of bounds')    
     # Create a function which displays a selected email. 
     # Once displayed, call the class method to set its 'has_been_read' variable to True.
-
+def send_email(index):
+    if index<len(inbox):
+        inbox[index].mark_as_sent()
+    else:
+       print('Unfortunately Index is out of bounds')     
 # --- Email Program --- #
 
 # Call the function to populate the Inbox for further use in your program.
@@ -62,19 +68,32 @@ menu = True
 while True:
     user_choice = int(input('''\nWould you like to:
     1. Read an email
-    2. View unread emails
-    3. Delete email by index (starting at 0)
-    4. List Emails Subject Line with Order Number
-    5. Read all viewed emails
-    6. Quit application
+    2. Send an email
+    3. View unread emails
+    4. View sent emails
+    5. Delete email by index (starting at 0)
+    6. List Emails Subject Line with Order Number
+    7. Read all viewed emails
+    8. Quit application
     Enter selection: '''))
        
     if user_choice == 1:
-        # add logic here to read an email
+        # logic to read an email
         index_option = int(input(f'Please choose the index of the email. It has to be less than {len(inbox)}: '))
         read_email(index_option)
         print('This email has now been marked as read')
-    elif user_choice == 2:
+    elif user_choice ==2:
+        index_option = int(input(f'Please choose the index of the email. It has to be less than {len(inbox)}: ')) 
+        option_send = input('Would you like to send this email? (Choose Yes/No): ')
+        if option_send.lower() =='yes':
+            send_email(index_option)
+            print('Your email has been successfully sent')
+        elif option_send.lower() =='no':
+            print('Email has not been sent. Choose another option')
+            break  
+        else:
+            print('Please enter the correct option: ')   
+    elif user_choice == 3:
         # add logic here to view unread emails
         for email in inbox:
             if email.has_been_read == False:
@@ -84,22 +103,30 @@ while True:
             else:
                 print('All emails have been read')  
                 break #to go back to menu
-    elif user_choice == 3:
+    elif user_choice ==4:
+        for email in inbox:
+            if  email.has_been_sent == True:
+                print(f'Email address is - {email.email_address} \nThe Subject Line is -  {email.subject_line} \nThe Content of the email is -{email.email_content}\n')                
+                email.mark_as_read()  
+            elif email.has_been_sent == False:
+                continue
+            
+    elif user_choice == 5:
         
         index_option = int(input(f'Please choose the index of the email to DELETE. It has to be less than {len(inbox)}: '))      
         inbox.pop(index_option)  
         print(f'Email at index {index_option} successfully deleted!')
         
-    elif user_choice ==4:
+    elif user_choice ==6:
         list_emails() #adding this functionality otherwise it is not used at all.    
-    elif user_choice==5: #Adding an option to re-read read emails otherwise no way to access.
+    elif user_choice==7: #Adding an option to re-read read emails otherwise no way to access.
         for email in inbox:
             if email.has_been_read == True:
                 print(f'Email address is - {email.email_address} \nThe Subject Line is -  {email.subject_line} \nThe Content of the email is -{email.email_content}\n')                
             else:
                 print('Please choose to read unread emails option 2')     
                 break   
-    elif user_choice ==6:
+    elif user_choice ==8:
         
         print('Goodbye!!!')
         exit()
